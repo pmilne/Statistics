@@ -3,8 +3,7 @@ package net.pmilne;
 import static java.lang.Math.*;
 import static org.apache.commons.math3.special.Erf.erfInv;
 
-@SuppressWarnings("SameParameterValue")
-public class TestSample {
+public class GenerateSample {
     private static double centre(double x) {
         return 2 * x - 1;
     }
