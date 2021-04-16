@@ -13,19 +13,18 @@ public class GenerateSample {
     public static void main(String[] args) {
         double[] mapped = BaseSamples.uniform01(0)
                 .limit(1000000)
-//                .map(x -> x)
-//                .map(Math::sqrt)
-//                .map(x -> pow(x, 1.0 / 3))
-//                .map(x -> pow(x, 0.25))
-//                .map(x -> pow(x, 0.1))
-//                .map(Math::log)
+//                .map(x -> x)                              //      uniform distribution f(x) = 1
+//                .map(Math::sqrt)                          //       linear distribution f(x) = x
+//                .map(x -> pow(x, 1.0 / 3))                //    quadratic distribution f(x) = x^2
+//                .map(x -> pow(x, 0.25))                   //       cubic distribution  f(x) = x^3
+//                .map(x -> pow(x, 0.1))                    //       nonic distribution  f(x) = x^9
+//                .map(Math::log)                           // exponential distribution  f(x) = e^x
 //                .map(x -> x * x)
 //                .map(x -> x * sqrt(x))
-//                .map(x -> pow(x, 1.0/3))
 //                .map(x -> sqrt(-log(x)))
-//                .map(Erf::erfInv)
-//                .map(x -> erfInv(centre(x)))
-                .map(x -> sqrt(2) * erfInv(centre(x)))
+//                .map(Erf::erfInv)                         //      normal distribution  f(x) = e^(-x^2)
+//                .map(x -> erfInv(centre(x)))              //      normal distribution mean 0
+                .map(x -> sqrt(2) * erfInv(centre(x)))    //      normal distribution mean = 0, std = 1
                 .toArray();
         assert Arrays.stream(mapped).noneMatch(Double::isNaN);
         Sample sample = new Sample(100, mapped);
