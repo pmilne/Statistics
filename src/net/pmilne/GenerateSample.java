@@ -23,7 +23,7 @@ public class GenerateSample {
 //                .map(x -> x * sqrt(x))
 //                .map(x -> sqrt(-log(x)))
 //                .map(Erf::erfInv)                         //       normal distribution f(x) = e^(-x^2)
-//                .map(x -> erfInv(centre(x)))              //      normal distribution: mean 0
+//                .map(x -> erfInv(centre(x)))              //       normal distribution: mean 0
                 .map(x -> sqrt(2) * erfInv(centre(x)))    //      normal distribution: mean = 0, std = 1
                 .toArray();
         assert Arrays.stream(mapped).noneMatch(Double::isNaN);
