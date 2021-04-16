@@ -17,7 +17,6 @@ public class GenerateSample {
 //                .map(Math::sqrt)                          //       linear distribution: f(x) = x
 //                .map(x -> pow(x, 1.0 / 3))                //    quadratic distribution: f(x) = x^2
 //                .map(x -> pow(x, 0.25))                   //        cubic distribution: f(x) = x^3
-//                .map(x -> pow(x, 0.1))                    //        nonic distribution: f(x) = x^9
 //                .map(Math::log)                           //  exponential distribution: f(x) = e^x
 //                .map(x -> x * x)
 //                .map(x -> x * sqrt(x))
