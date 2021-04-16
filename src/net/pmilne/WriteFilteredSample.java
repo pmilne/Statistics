@@ -3,7 +3,7 @@ package net.pmilne;
 import java.io.*;
 
 @SuppressWarnings("SameParameterValue")
-public class WriteFileredSample {
+public class WriteFilteredSample {
     public static void main(String[] args) throws FileNotFoundException {
         PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream("Sample.csv")));
         BaseSamples.gaussian(0, 1000000, 1000)
