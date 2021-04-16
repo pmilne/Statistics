@@ -14,6 +14,7 @@ import static org.jfree.chart.ChartFactory.getChartTheme;
 
 public class Histogram {
     private static SimpleHistogramDataset getDataset(Sample sample) {
+        assert !Double.isNaN(sample.min) && !Double.isNaN(sample.max);
         int                    count     = sample.buckets.length;
         double                 bucketMax = count - 1;
         SimpleHistogramDataset dataset   = new SimpleHistogramDataset("Bucket counts per " + String.format("%,d", sample.size) + " observations");
