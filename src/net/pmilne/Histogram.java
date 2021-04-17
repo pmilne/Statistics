@@ -29,7 +29,7 @@ public class Histogram {
         return dataset;
     }
 
-    private static Container createChartPanel(Sample sample) {
+    private static ChartPanel createChartPanel(Sample sample) {
         SimpleHistogramDataset dataset = getDataset(sample);
         ChartTheme theme = getChartTheme();
         ((StandardChartTheme) theme).setXYBarPainter(new StandardXYBarPainter());
