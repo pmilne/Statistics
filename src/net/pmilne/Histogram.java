@@ -44,12 +44,16 @@ public class Histogram {
         return new ChartPanel(chart);
     }
 
+    private static void show(String title, Container container) {
+        JFrame frame = new JFrame(title);
+        frame.setSize(800, 400);
+        frame.setContentPane(container);
+        frame.setLocationRelativeTo(null); // center the window
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+
     public static void show(Sample sample) {
-        JFrame example = new JFrame(Histogram.class.getSimpleName());
-        example.setSize(800, 400);
-        example.setContentPane(createChartPanel(sample));
-        example.setLocationRelativeTo(null); // center the window
-        example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        example.setVisible(true);
+        show(Histogram.class.getSimpleName(), createChartPanel(sample));
     }
 }
