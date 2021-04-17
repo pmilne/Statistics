@@ -1,29 +1,31 @@
 package net.pmilne;
 
 import java.util.Arrays;
+import java.util.Random;
+import java.util.function.DoubleUnaryOperator;
 
-import static java.lang.Math.*;
+import org.apache.commons.math3.special.Erf;
+
+import static java.lang.Math.sqrt;
 import static org.apache.commons.math3.special.Erf.erfInv;
 
 public class GenerateSample {
-    private static double centre(double x) {
-        return 2 * x - 1;
-    }
-
     public static void main(String[] args) {
-        double[] mapped = BaseSamples.uniform01(0)
+        DoubleUnaryOperator center = x -> 2 * x - 1;
+        double[] mapped = new Random(0)
+                .doubles()
                 .limit(1000000)
-//                .map(x -> x)                              //      uniform distribution: f(x) = 1
-//                .map(Math::sqrt)                          //       linear distribution: f(x) = x
-//                .map(x -> pow(x, 1.0 / 3))                //    quadratic distribution: f(x) = x^2
-//                .map(x -> pow(x, 0.25))                   //        cubic distribution: f(x) = x^3
-//                .map(Math::log)                           //  exponential distribution: f(x) = e^x
+//                .map(x -> x)                                //      uniform distribution
+//                .map(Math::sqrt)                            //       linear distribution
+//                .map(x -> pow(x, 1.0 / 3))                  //    quadratic distribution
+//                .map(x -> pow(x, 0.25))                     //        cubic distribution
+//                .map(Math::log)                             //  exponential distribution
 //                .map(x -> x * x)
 //                .map(x -> x * sqrt(x))
 //                .map(x -> sqrt(-log(x)))
-//                .map(Erf::erfInv)                         //       normal distribution: f(x) = e^(-x^2)
-//                .map(x -> erfInv(centre(x)))              //       normal distribution: mean 0
-                .map(x -> sqrt(2) * erfInv(centre(x)))    //      normal distribution: mean = 0, std = 1
+//                .map(Erf::erfInv)                           //       normal distribution
+                .map(center).map(Erf::erfInv)               //       normal distribution
+//                .map(center).map(x -> sqrt(2) * erfInv(x))  //      normal distribution
                 .toArray();
         assert Arrays.stream(mapped).noneMatch(Double::isNaN);
         Sample sample = new Sample(100, mapped);
