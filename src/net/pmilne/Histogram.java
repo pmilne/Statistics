@@ -16,14 +16,14 @@ public class Histogram {
     private static SimpleHistogramDataset getDataset(Sample sample) {
         assert !Double.isNaN(sample.min) && !Double.isNaN(sample.max);
         int                    count     = sample.buckets.length;
-        double                 bucketMax = count - 1;
         SimpleHistogramDataset dataset   = new SimpleHistogramDataset("Bucket counts per " + String.format("%,d", sample.size) + " observations");
+        dataset.setAdjustForBinSize(false);
         for (int i = 0; i < count; i++) {
             double             min   = sample.minObservationForBucket(i);
             double             max   = sample.minObservationForBucket(i + 1);
             int                value = sample.buckets[i];
             SimpleHistogramBin bin   = new SimpleHistogramBin(min, max, true, false);
-            bin.setItemCount((int) (value / bucketMax));
+            bin.setItemCount(value);
             dataset.addBin(bin);
         }
         return dataset;
