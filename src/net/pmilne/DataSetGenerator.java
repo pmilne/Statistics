@@ -45,9 +45,9 @@ public class DataSetGenerator {
                     int    cMin     = cumulative[minIndex];
                     int    cMax     = cumulative[maxIndex];
                     double k        = (double) (randomIndex - cMin) / (cMax - cMin);
-                    double min0     = sample.minObservationForBucket(minIndex);
-                    double max0     = sample.minObservationForBucket(maxIndex);
-                    return min0 + k * (max0 - min0);
+                    double min      = sample.minObservationForBucket(minIndex);
+                    double max      = sample.minObservationForBucket(maxIndex);
+                    return min + k * (max - min);
                 });
     }
 
