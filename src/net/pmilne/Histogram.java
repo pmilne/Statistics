@@ -7,36 +7,48 @@ import javax.swing.WindowConstants;
 import org.jfree.chart.*;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.xy.StandardXYBarPainter;
-import org.jfree.data.statistics.SimpleHistogramBin;
 import org.jfree.data.statistics.SimpleHistogramDataset;
+import org.jfree.data.xy.IntervalXYDataset;
 
 import static org.jfree.chart.ChartFactory.getChartTheme;
 
 public class Histogram {
-    private static SimpleHistogramDataset getDataset(Sample sample) {
-        assert !Double.isNaN(sample.min) && !Double.isNaN(sample.max);
-        int                    count     = sample.buckets.length;
-        SimpleHistogramDataset dataset   = new SimpleHistogramDataset("Bucket counts per " + String.format("%,d", sample.size) + " observations");
-        dataset.setAdjustForBinSize(false);
-        for (int i = 0; i < count; i++) {
-            double             min   = sample.minObservationForBucket(i);
-            double             max   = sample.minObservationForBucket(i + 1);
-            int                value = sample.buckets[i];
-            SimpleHistogramBin bin   = new SimpleHistogramBin(min, max, true, false);
-            bin.setItemCount(value);
-            dataset.addBin(bin);
-        }
-        return dataset;
+    private static IntervalXYDataset getDataset(Sample sample) {
+        assert !Double.isNaN(sample.scale);
+        double yScale = (double) sample.buckets.length / sample.size;
+        return new SimpleHistogramDataset("Population density (relative to uniform)") {
+            @Override
+            public int getItemCount(int series) {
+                return sample.buckets.length;
+            }
+
+            public double getStartXValue(int series, int item) {
+                return sample.minObservationForBucket(item);
+            }
+
+            public double getEndXValue(int series, int item) {
+                return sample.minObservationForBucket(item + 1);
+            }
+
+            public double getXValue(int series, int item) {
+                return sample.minObservationForBucket(item);
+            }
+
+            @Override
+            public double getYValue(int series, int item) {
+                return yScale * sample.buckets[item];
+            }
+        };
     }
 
     private static ChartPanel createChartPanel(Sample sample) {
-        SimpleHistogramDataset dataset = getDataset(sample);
-        ChartTheme theme = getChartTheme();
+        IntervalXYDataset dataset = getDataset(sample);
+        ChartTheme        theme   = getChartTheme();
         ((StandardChartTheme) theme).setXYBarPainter(new StandardXYBarPainter());
         JFreeChart chart = ChartFactory.createHistogram(
                 "Generated", // Chart Title
-                "Buckets (" + sample.buckets.length + ")", // Category axis
-                "Counts", // Value axis
+                "Value (" + sample.buckets.length + " buckets)", // Category axis
+                "Density", // Value axis
                 dataset,
                 PlotOrientation.VERTICAL,
                 true, true, false
