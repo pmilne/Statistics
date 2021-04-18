@@ -32,8 +32,8 @@ public class DataSetGenerator {
         return returnMin ? min : max;
     }
 
-    // Extend a dataset by performing the integration and inversion steps on a finite element model --
-    // by binary chop and interpolation.
+    // Extend a dataset by performing the integration and inversion steps on a Sample --
+    // using binary chop and interpolation on the cumulative frequency table.
     public static DoubleStream generateRandomSamplesFor(Sample sample, int seed) {
         int[] cumulative = cumulative(sample.buckets);
         int   total      = cumulative[cumulative.length - 1];
