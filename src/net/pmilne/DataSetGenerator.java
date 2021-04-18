@@ -9,10 +9,11 @@ import java.util.stream.DoubleStream;
  * linear interpolation between the resulting bounds.
  */
 public class DataSetGenerator {
-    private static int[] cumulative(int[] counts) {
-        int[] result = new int[counts.length + 1];
-        for (int i = 0; i < counts.length; i++) {
-            result[i + 1] = result[i] + counts[i];
+    // Return the cumulative sample of a, returned in an array of n + 1 elements, where the first is zero.
+    private static int[] cumulative(int[] a) {
+        int[] result = new int[a.length + 1];
+        for (int i = 0; i < a.length; i++) {
+            result[i + 1] = result[i] + a[i];
         }
         return result;
     }
