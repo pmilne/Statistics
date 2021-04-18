@@ -6,7 +6,7 @@ import java.util.stream.DoubleStream;
 
 /**
  * A simple generator for a Sampled distribution. Uses a binary chop to invert the cumulative frequency
- * table, then linearly interpolate between the resulting bounds.]
+ * table, then linear interpolation between the resulting bounds.]
  */
 public class DataSetGenerator {
     // Generate infinite streams of observations from various models
