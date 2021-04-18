@@ -1,13 +1,12 @@
 package net.pmilne;
 
 import java.util.Random;
-import java.util.function.DoubleSupplier;
 import java.util.function.IntPredicate;
 import java.util.stream.DoubleStream;
 
 /**
- * A simple generator for a sampled distribution. Uses a binary chop to invert the cumulative frequency
- * table, then linear interpolation between the resulting bounds.]
+ * A simple generator for a sampled distribution. Uses a binary chop to invert the cumulative frequency table, then
+ * linear interpolation between the resulting bounds.
  */
 public class DataSetGenerator {
     // Generate infinite streams of observations from various models
@@ -63,7 +62,7 @@ public class DataSetGenerator {
                 .limit(100000)
                 .map(x -> 1000000 + 1000 * x) // mean = 100000, std = 1000
                 .toArray();
-        // Synthesize 10^6 samples from the model
+        // Produce 10^6 observations
         double[] synthetic = generateRandomSamplesFor(1000, observations, 0)
                 .limit(1000000)
                 .toArray();
