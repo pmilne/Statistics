@@ -56,13 +56,13 @@ public class DataSetGenerator {
     }
 
     public static void main(String[] args) {
-        // Generate 10^5 samples from a normal distribution
+        // Generate 10^5 observations of a normal distribution
         double[] observations = DoubleStream
                 .generate(new Random(0)::nextGaussian)
                 .limit(100000)
                 .map(x -> 1000000 + 1000 * x) // mean = 100000, std = 1000
                 .toArray();
-        // Produce 10^6 observations
+        // Extend to 10^6 observations
         double[] synthetic = generateRandomSamplesFor(1000, observations, 0)
                 .limit(1000000)
                 .toArray();
