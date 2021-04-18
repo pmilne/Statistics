@@ -9,12 +9,14 @@ import org.apache.commons.math3.special.Erf;
 import static java.lang.Math.sqrt;
 import static org.apache.commons.math3.special.Erf.erfInv;
 
+@SuppressWarnings("unused")
 public class GenerateSample {
+    private static final DoubleUnaryOperator CENTER = x -> 2 * x - 1; // map [0 .. 1] -> [-1 .. 1]
+    private static final double              SQRT2  = sqrt(2);
+
     public static void main(String[] args) {
-        DoubleUnaryOperator center = x -> 2 * x - 1;
         double[] mapped = new Random(0)
-                .doubles()
-                .limit(1000000)
+                .doubles(1000000) // a stream of doubles between 0 (incl) and 1 (excl)
 //                .map(x -> x)                                //      uniform distribution
 //                .map(Math::sqrt)                            //       linear distribution
 //                .map(x -> pow(x, 1.0 / 3))                  //    quadratic distribution
@@ -24,8 +26,8 @@ public class GenerateSample {
 //                .map(x -> x * sqrt(x))
 //                .map(x -> sqrt(-log(x)))
 //                .map(Erf::erfInv)                           //       normal distribution
-                .map(center).map(Erf::erfInv)               //       normal distribution
-//                .map(center).map(x -> sqrt(2) * erfInv(x))  //      normal distribution
+//                .map(CENTER).map(Erf::erfInv)               //       normal distribution
+                .map(CENTER).map(x -> SQRT2 * erfInv(x))    //       normal distribution (std = 1)
                 .toArray();
         assert Arrays.stream(mapped).noneMatch(Double::isNaN);
         Sample sample = new Sample(100, mapped);
