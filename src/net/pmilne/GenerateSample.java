@@ -4,15 +4,13 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.function.DoubleUnaryOperator;
 
-import org.apache.commons.math3.special.Erf;
-
 import static java.lang.Math.sqrt;
 import static org.apache.commons.math3.special.Erf.erfInv;
 
 @SuppressWarnings("unused")
 public class GenerateSample {
-    private static final DoubleUnaryOperator CENTER = x -> 2 * x - 1; // map [0 .. 1] -> [-1 .. 1]
-    private static final double              SQRT2  = sqrt(2);
+    public static final DoubleUnaryOperator CENTER = x -> 2 * x - 1; // map [0 .. 1] -> [-1 .. 1]
+    public static final double              SQRT2  = sqrt(2);
 
     public static void main(String[] args) {
         double[] mapped = new Random(0)
