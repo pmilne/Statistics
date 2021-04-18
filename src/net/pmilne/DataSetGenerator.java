@@ -64,9 +64,11 @@ public class DataSetGenerator {
                 .map(x -> 1000000 + 1000 * x) // mean = 100000, std = 1000
                 .toArray();
         // Extend to 10^6 observations
+        long time = System.currentTimeMillis();
         double[] synthetic = generateRandomSamplesFor(1000, observations, 0)
-                .limit(1000000)
+                .limit(10000000)
                 .toArray();
+        System.out.println("Generation time: " + (System.currentTimeMillis() - time) / 1000.0 + "s");
         Histogram.show(new Sample(100, synthetic));
     }
 }
