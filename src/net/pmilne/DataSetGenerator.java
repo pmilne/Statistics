@@ -12,7 +12,7 @@ public class DataSetGenerator {
     private static int[] cumulative(int[] counts) {
         int[] result = new int[counts.length + 1];
         for (int i = 0; i < counts.length; i++) {
-            result[i + 1] = counts[i] + result[i];
+            result[i + 1] = result[i] + counts[i];
         }
         return result;
     }
