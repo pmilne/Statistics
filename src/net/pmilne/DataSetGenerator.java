@@ -1,11 +1,12 @@
 package net.pmilne;
 
 import java.util.Random;
+import java.util.function.DoubleSupplier;
 import java.util.function.IntPredicate;
 import java.util.stream.DoubleStream;
 
 /**
- * A simple generator for a Sampled distribution. Uses a binary chop to invert the cumulative frequency
+ * A simple generator for a sampled distribution. Uses a binary chop to invert the cumulative frequency
  * table, then linear interpolation between the resulting bounds.]
  */
 public class DataSetGenerator {
@@ -51,21 +52,21 @@ public class DataSetGenerator {
                 });
     }
 
+    public static DoubleStream generateRandomSamplesFor(int bucketCount, double[] observations, int seed) {
+        return generateRandomSamplesFor(new Sample(bucketCount, observations), seed);
+    }
+
     public static void main(String[] args) {
         // Generate 10^5 samples from a normal distribution
-        Random gen = new Random(0);
-        double[] observations = DoubleStream.generate(gen::nextGaussian)
+        double[] observations = DoubleStream
+                .generate(new Random(0)::nextGaussian)
                 .limit(100000)
                 .map(x -> 1000000 + 1000 * x) // mean = 100000, std = 1000
                 .toArray();
-        // Create a model
-        Sample sample = new Sample(1000, observations);
         // Synthesize 10^6 samples from the model
-        double[] synthetic = DataSetGenerator.generateRandomSamplesFor(sample, 0)
+        double[] synthetic = generateRandomSamplesFor(1000, observations, 0)
                 .limit(1000000)
                 .toArray();
-        // Create a model of the synthetic samples
-        Sample syntheticSampled = new Sample(100, synthetic);
-        Histogram.show(syntheticSampled);
+        Histogram.show(new Sample(100, synthetic));
     }
 }
