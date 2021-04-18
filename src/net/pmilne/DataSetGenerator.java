@@ -63,7 +63,7 @@ public class DataSetGenerator {
                 .limit(100000)
                 .map(x -> 1000000 + 1000 * x) // mean = 100000, std = 1000
                 .toArray();
-        // Extend to 10^6 observations
+        // Extend to 10^7 observations
         long time = System.currentTimeMillis();
         double[] synthetic = generateRandomSamplesFor(1000, observations, 0)
                 .limit(10000000)
