@@ -9,7 +9,6 @@ import java.util.stream.DoubleStream;
  * linear interpolation between the resulting bounds.
  */
 public class DataSetGenerator {
-    // Generate infinite streams of observations from various models
     private static int[] cumulative(int[] counts) {
         int[] result = new int[counts.length + 1];
         for (int i = 0; i < counts.length; i++) {
