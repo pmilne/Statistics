@@ -18,6 +18,10 @@ public class DataSetGenerator {
         return result;
     }
 
+
+    // If returnMin is false, return the index of the last element that failed the test.
+    // If returnMin is true,  return the index of the first element that passed the test.
+    // The predicate, test, must satisfy !test(x) => !test(x-1) and test(x) => test(x+1).
     private static int binarySearch(int[] a, IntPredicate test, boolean returnMin) {
         int min = 0;
         int max = a.length - 1;
@@ -29,7 +33,7 @@ public class DataSetGenerator {
                 min = mid;
             }
         }
-        return returnMin ? min : max;
+        return !returnMin ? min : max;
     }
 
     // Extend a dataset by performing the integration and inversion steps on a Sample --
@@ -40,9 +44,9 @@ public class DataSetGenerator {
         return new Random(seed)
                 .ints(0, total) // random integers in the range [0 .. total]
                 .mapToDouble(randomIndex -> {
-                    // Find the interval containing the randomIndex and interpolate between the x values
-                    int    minIndex = binarySearch(cumulative, x -> (x >= randomIndex), true);
-                    int    maxIndex = binarySearch(cumulative, x -> (x > randomIndex), false);
+                    // Find the interval containing the randomIndex and interpolate between the corresponding x values
+                    int    minIndex = binarySearch(cumulative, x -> (x >= randomIndex), false);
+                    int    maxIndex = binarySearch(cumulative, x -> (x > randomIndex), true);
                     int    cMin     = cumulative[minIndex];
                     int    cMax     = cumulative[maxIndex];
                     double k        = (double) (randomIndex - cMin) / (cMax - cMin);
