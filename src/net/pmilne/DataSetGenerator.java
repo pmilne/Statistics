@@ -19,10 +19,9 @@ public class DataSetGenerator {
     }
 
 
-    // If returnMin is false, return the index of the last element that failed the test.
-    // If returnMin is true,  return the index of the first element that passed the test.
+    // Return the index of the last element for which the test is false.
     // The predicate, test, must satisfy !test(x) => !test(x-1) and test(x) => test(x+1).
-    private static int binarySearch(int[] a, IntPredicate test, boolean returnMin) {
+    private static int binarySearch(int[] a, IntPredicate test) {
         int min = 0;
         int max = a.length - 1;
         while (max - min > 1) {
@@ -33,26 +32,27 @@ public class DataSetGenerator {
                 min = mid;
             }
         }
-        return !returnMin ? min : max;
+        return min;
     }
 
     // Extend a dataset by performing the integration and inversion steps on a Sample --
-    // using binary chop and interpolation on the cumulative frequency table.
+    // using binary chop and interpolation on the cumulative frequency function.
     public static DoubleStream generateRandomSamplesFor(Sample sample, int seed) {
         int[] cumulative = cumulative(sample.buckets);
-        int   total      = cumulative[cumulative.length - 1];
+        assert cumulative[cumulative.length - 1] == sample.size;
+        int total = sample.size;
         return new Random(seed)
-                .ints(0, total) // random integers in the range [0 .. total]
-                .mapToDouble(randomIndex -> {
-                    // Find the interval containing the randomIndex and interpolate between the corresponding x values
-                    int    minIndex = binarySearch(cumulative, x -> (x >= randomIndex), false);
-                    int    maxIndex = binarySearch(cumulative, x -> (x > randomIndex), true);
-                    int    cMin     = cumulative[minIndex];
-                    int    cMax     = cumulative[maxIndex];
-                    double k        = (double) (randomIndex - cMin) / (cMax - cMin);
-                    double min      = sample.minObservationForBucket(minIndex);
-                    double max      = sample.minObservationForBucket(maxIndex);
-                    return min + k * (max - min);
+                .doubles(0, total) // random doubles in range [0 .. total] (excluding total)
+                .map(randomY -> {
+                    // Find the interval containing randomY and interpolate between the corresponding x values
+                    int    minIndex = binarySearch(cumulative, y -> (y >= randomY));
+                    int    maxIndex = minIndex + 1;
+                    int    yMin     = cumulative[minIndex];
+                    int    yMax     = cumulative[maxIndex];
+                    double k        = (randomY - yMin) / (yMax - yMin);
+                    double xMin     = sample.minObservationForBucket(minIndex);
+                    double xMax     = sample.minObservationForBucket(maxIndex);
+                    return xMin + k * (xMax - xMin);
                 });
     }
 
