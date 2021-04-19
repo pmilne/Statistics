@@ -17,14 +17,21 @@ public class Sample {
         this.size    = observations.length;
         this.min     = stats.getMin();
         this.max     = stats.getMax();
-        this.scale   = (max - min) / (bucketCount - 1);
+        this.scale   = (max - min) / bucketCount;
         this.buckets = new int[bucketCount];
         // Place the observations in the appropriate buckets
         Arrays.stream(observations).forEach(observation -> buckets[getBucketFor(observation)]++);
     }
 
     private int getBucketFor(double observation) {
-        return (int) floor((observation - min) / scale);
+        int result = (int) floor((observation - min) / scale);
+        // Special case the max observation and neighbours captured by rounding to solve the fencepost problem
+        // that arises when converting from the real range to the integer range. Effectively we are saying that
+        // observation max is equivalent to max - epsilon.
+        if (result == buckets.length) {
+            return result - 1;
+        }
+        return result;
     }
 
     public double minObservationForBucket(int bucket) {
